@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Avril ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe6ea, #ffb3c6);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(255, 105, 135, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 90%;
+            transition: all 0.5s ease;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #d6336c;
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.8);
+        }
+
+        .buttons-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            min-height: 60px; /* Para que no colapse cuando el botón 'No' se vuelva absolute */
+        }
+
+        button {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            outline: none;
+        }
+
+        #btn-yes {
+            background: #ff4d6d;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            z-index: 2;
+        }
+
+        #btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6);
+        }
+
+        #btn-no {
+            background: #8d99ae;
+            box-shadow: 0 4px 15px rgba(141, 153, 174, 0.4);
+            z-index: 10;
+        }
+
+        /* Ocultar elementos */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Estilos del contenedor final (gatito) */
+        #success-container h2 {
+            font-family: 'Pacifico', cursive;
+            color: #d6336c;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        #success-container img {
+            max-width: 100%;
+            width: 300px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            animation: bounceIn 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            button { font-size: 1.2rem; padding: 10px 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor de la Pregunta -->
+    <div id="question-container" class="container">
+        <h1>Avril, ¿me quieres?</h1>
+        <div class="buttons-wrapper">
+            <button id="btn-yes">Sí</button>
+            <button id="btn-no">No</button>
+        </div>
+    </div>
+
+    <!-- Contenedor de la Respuesta (Oculto al inicio) -->
+    <div id="success-container" class="container hidden">
+        <h2>¡Menos mal que dijiste que siiii xd! 🌹</h2>
+        <!-- Imagen meme de un gatito con flores -->
+        <img src="c:\Users\Usuario\OneDrive\Documentos\programacion\paginas fer\fotito_gato_flusflus.jpg" alt="Gatito con flores">
+    </div>
+
+    <script>
+        const btnNo = document.getElementById('btn-no');
+        const btnYes = document.getElementById('btn-yes');
+        const questionContainer = document.getElementById('question-container');
+        const successContainer = document.getElementById('success-container');
+
+        // Función para mover el botón "No" aleatoriamente
+        function moveButton(e) {
+            // Prevenir el click por si acaso logra presionarlo en móvil
+            e.preventDefault();
+
+            // Cambiar a fixed para que se mueva por toda la pantalla
+            btnNo.style.position = 'fixed';
+            
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const btnWidth = btnNo.offsetWidth;
+            const btnHeight = btnNo.offsetHeight;
+
+            // Calcular nueva posición aleatoria (manteniéndose dentro de los márgenes)
+            const randomX = Math.max(10, Math.floor(Math.random() * (windowWidth - btnWidth - 20)));
+            const randomY = Math.max(10, Math.floor(Math.random() * (windowHeight - btnHeight - 20)));
+
+            btnNo.style.left = `${randomX}px`;
+            btnNo.style.top = `${randomY}px`;
+        }
+
+        // Eventos para el botón "No" (cubrimos PC y móviles)
+        btnNo.addEventListener('mouseover', moveButton);
+        btnNo.addEventListener('touchstart', moveButton);
+        btnNo.addEventListener('click', moveButton); // Por si de alguna manera logra hacerle click
+
+        // Evento para el botón "Sí"
+        btnYes.addEventListener('click', () => {
+            // Ocultar la pregunta y mostrar el meme
+            questionContainer.classList.add('hidden');
+            // Asegurarnos que el botón 'no' desaparezca si andaba flotando
+            btnNo.style.display = 'none'; 
+            successContainer.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
